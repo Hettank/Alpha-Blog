@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .hero {
+            background: url('<%= asset_path 'articlebg.jpeg' %>') no-repeat center center;
+            background-size: cover;
+            color: white;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .feature-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+
+        .cta-button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.25rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div>
+            <h1 class="display-4 fw-bold">Welcome to Alpha Blog</h1>
+            <p class="lead">Explore the latest articles, news, and trends in various fields.</p>
+            <a href="/articles" class="cta-button">Explore Articles</a>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <h2 class="text-center mb-5">Discover Our Features</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm flex">
+                    <%= image_tag 'feature1.png', class: 'card-img-top feature-img', alt: 'Feature 2' %>
+                    <div class="card-body">
+                        <h5 class="card-title">Feature 1</h5>
+                        <p class="card-text">Write Article</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm flex">
+                    <%= image_tag 'feature1.png', class: 'card-img-top feature-img', alt: 'Feature 2' %>
+                    <div class="card-body">
+                        <h5 class="card-title">Feature 2</h5>
+                        <p class="card-text">Edit Article</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm flex">
+                    <%= image_tag 'feature1.png', class: 'card-img-top feature-img', alt: 'Feature 2' %>
+                    <div class="card-body">
+                        <h5 class="card-title">Feature 3</h5>
+                        <p class="card-text">Delete Article</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-4">
+        <p>&copy; 2024 Alpha Blog. All rights reserved.</p>
+    </footer>
+</body>
+</html>
