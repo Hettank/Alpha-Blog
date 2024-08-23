@@ -1,15 +1,5 @@
-<% if @article.errors.any? %>
-  <div class="alert alert-danger">
-    <h4 class="alert-heading">Prohibited this article from being saved:</h4>
-    <ul>
-      <% @article.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
-
 <div class="container mt-5">
+  <%= render "shared/errors", obj: @article %>
   <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
       <h5 class="mb-0">Create/Edit Article</h5>

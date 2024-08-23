@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Alpha Blog</a>
@@ -12,11 +21,65 @@
         <li class="nav-item">
           <%= link_to 'Articles', articles_path, class: "nav-link" %>
         </li>
+        <li class="nav-item">
+          <%= link_to 'Bloggers', users_path, class: "nav-link" %>
+        </li>
+        <% if logged_in? %>
+          <li class="nav-item"> 
+            <div class="nav-link user-profile" id="handle-profile-btn">
+              <%= "(Admin)" if current_user.admin? %> <%= current_user.username %>
+              <i class="ph ph-caret-up-down"></i>
+            </div>
+            <div class="dropdown-container">
+              <ul class="nav-links">
+                <li class="nav-item"><%= link_to 'View Profile', user_path(current_user) %></li>
+                <li class="nav-item"><%= link_to 'Edit Profile', edit_user_path(current_user) %></li>
+                <li class="nav-item"><%= link_to 'Delete Account', user_path(current_user), data: { turbo_method: :delete, turbo_confirm: "Are you sure ?" }, class: "text-danger fw-bold" %></li>
+              </ul>
+            </div>
+          </li>
+        <% end %>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      <ul class="navbar-nav mb-2 mb-lg-0 auth-links">
+        <% if logged_in? %>
+          <li class="nav-item">
+            <button class="button btn-signup">
+              <%= link_to 'Logout', logout_path, data: { turbo_method: :delete }, class: "nav-link" %>
+            </button>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <button class="button btn-signup">
+              <%= link_to 'Signup', signup_path, class: "nav-link" %>
+            </button>
+          </li> 
+          <li class="nav-item">
+            <button class="button btn-login">
+              <%= link_to 'Login', login_path, class: "nav-link" %>
+            </button>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
 </nav>
+<script>
+      const toggleDropdown = () => {
+        const dropContainer = document.querySelector('.dropdown-container');
+
+        if (dropContainer.style.display === 'block') {
+          dropContainer.style.display = 'none';
+        } else {
+          dropContainer.style.display = 'block';
+        }
+      };
+
+      // Ensure the script runs after Turbo loads
+      document.addEventListener('turbo:load', () => {
+        const profileButton = document.getElementById('handle-profile-btn');
+        profileButton.addEventListener('click', toggleDropdown);
+      });
+
+    </script>
+</body>
+</html>

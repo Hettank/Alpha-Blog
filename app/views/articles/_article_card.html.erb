@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <style>
+    .card {
+      position: relative;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      padding: 1rem;
+      width: 100%;
+      height: 235px;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: -10px;
+      background: linear-gradient(135deg, #667eea, #764ba2);;
+      border-radius: 15px;
+      z-index: -1;
+    }
+
+    .btns {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card-body {
+      position: relative;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .card-body::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    .delete-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title"><strong>Title: </strong><%= article.title %></h5>
+      <p class="card-text"><strong>Description: </strong><%= article.description %></p>
+      <% if current_user %>
+        <p class="card-text"><strong>Author: </strong><%= article.user.username %></p>
+      <% end %>
+      <p class="card-text">
+        <small class="text-muted">Created at: <%= article.created_at.strftime("%m/%d/%Y") %></small><br>
+        <small class="text-muted">Updated at: <%= article.updated_at.strftime("%m/%d/%Y") %></small>
+      </p>
+      <div class="btns mt-3">
+        <%= link_to 'Show', article_path(article), class: 'btn btn-info btn-sm' %>
+        <% if logged_in? && current_user == article.user %>
+          <%= link_to 'Edit', edit_article_path(article), class: 'btn btn-warning btn-sm' %>
+        <% end %>
+      </div>
+      <% if logged_in? && current_user == article.user %>
+        <%= link_to article_path(article), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-danger delete-btn btn-sm d-flex align-items-center' do %>
+          <i class="ph ph-trash"></i>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</body>
+</html>

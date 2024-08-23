@@ -1,47 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Articles</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr; /* 1 column in small screen */
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on large screens */
+            }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 2px solid #e2e8f0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-left: 1rem;
+        }
+
+        .create-button {
+            background: #ffffff;
+            color: #764ba2;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            margin-right: 1rem;
+        }
+
+        .create-button:hover {
+            background: #764ba2;
+            color: #ffffff;
+            transform: translateY(-5px);
+        }
+
+        .cards {
+            display: flex;
+            align-items: center;
+            flex-direction: column;  
+            gap: 1.5rem;
+        }
+
+
+        .boxes {
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .show {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+    </style>
 </head>
-<body>
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+
+<body class="bg-gray-200">
+    <div class="container mx-auto mt-10">
+        <div class="header">
             <h1>Articles</h1>
-            <%= link_to 'Create New Article', new_article_path, class: 'btn btn-primary' %>
+            <%= link_to 'Create New Article', new_article_path, class: 'create-button' %>
         </div>
-        
-        <table class="table table-hover table-striped table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th colspan="3" class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+
+        <div class="grid-container">
+            <% if @articles.length > 0 %>
                 <% @articles.each do |article| %>
-                    <tr>
-                        <td><%= article.id %></td>
-                        <td><%= article.title %></td>
-                        <td><%= article.description %></td>
-                        <td class="text-center">
-                            <%= link_to 'Show', article_path(article), class: 'btn btn-info btn-sm' %>
-                        </td>
-                        <td class="text-center">
-                            <%= link_to 'Edit', edit_article_path(article), class: 'btn btn-warning btn-sm' %>
-                        </td>
-                        <td class="text-center">
-                            <%= link_to 'Delete', article_path(article), 
-                                       class: 'btn btn-danger btn-sm',
-                                       data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-                        </td>
-                    </tr>
+                    <div class="cards">
+                        <%= render partial: 'article_card', locals: { article: article } %>
+                    </div>
                 <% end %>
-            </tbody>
-        </table>
+            <% else %>
+                <p class="show">No Any Articles created yet</p>
+            <% end %>
+        </div>
+
+    </div>
+
+    <div class="pagination-container">
+        <%= will_paginate @articles, class: "paginate" %>
     </div>
 </body>
+
 </html>

@@ -18,7 +18,7 @@
         .feature-img {
             max-width: 100%;
             height: auto;
-            border-radius: 0.5rem;
+            border-radius: 0.5rem; 
         }
 
         .cta-button {
@@ -55,7 +55,7 @@
                     <%= image_tag 'feature1.png', class: 'card-img-top feature-img', alt: 'Feature 2' %>
                     <div class="card-body">
                         <h5 class="card-title">Feature 1</h5>
-                        <p class="card-text">Write Article</p>
+                        <p class="card-text">User Can Write Article</p>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                     <%= image_tag 'feature1.png', class: 'card-img-top feature-img', alt: 'Feature 2' %>
                     <div class="card-body">
                         <h5 class="card-title">Feature 2</h5>
-                        <p class="card-text">Edit Article</p>
+                        <p class="card-text">User Can Edit Article</p>
                     </div>
                 </div>
             </div>
@@ -73,15 +73,13 @@
                     <%= image_tag 'feature1.png', class: 'card-img-top feature-img', alt: 'Feature 2' %>
                     <div class="card-body">
                         <h5 class="card-title">Feature 3</h5>
-                        <p class="card-text">Delete Article</p>
+                        <p class="card-text">User Can Delete Article</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white text-center py-4">
-        <p>&copy; 2024 Alpha Blog. All rights reserved.</p>
-    </footer>
+    <%= render 'footer' %>
 </body>
 </html>

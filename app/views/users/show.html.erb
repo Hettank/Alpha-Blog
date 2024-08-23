@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+      .profile-header {
+        background: linear-gradient(135deg, #007bff, #00c6ff);
+        color: #ffffff;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .profile-header h3 {
+        font-size: 2.75rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      .card {
+        background: #ffffff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: -4rem;
+        z-index: 1;
+        position: relative;
+      }
+      .card-header {
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #343a40;
+        position: relative;
+      }
+      .card-body {
+        padding: 1.5rem;
+        transition: background 0.3s;
+      }
+      .card-body:hover {
+        background: #f1f3f5;
+      }
+      .card-body h3 {
+        margin-bottom: 1rem;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #007bff;
+      }
+
+      .article-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        row-gap: 3rem;
+        column-gap: 1.5rem;
+      }
+
+      .article-card {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+      }
+
+      .article-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(135deg, #007bff, #00c6ff);
+        border-radius: 0 0 8px 8px;
+      }
+
+      .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .article-card h3 {
+        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #343a40;
+      }
+
+      .article-card p {
+        color: #6c757d;
+        font-size: 0.875rem;
+      }
+
+      .no-articles {
+        text-align: center;
+        color: #6c757d;
+        font-size: 1.25rem;
+        font-weight: 500;
+        padding: 2rem;
+      }
+
+      .edit-btn {
+        background: #007bff;
+        color: #ffffff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .edit-btn:hover {
+        color: #fff;
+      }
+
+      .dropdown {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        background-color: #F5F7F8;
+        padding: 6px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 9999 !important;
+        text-align: right;
+      }
+      .icon {
+        font-size: 15px;
+      }
+
+      .dropdown-content {
+        display: inline-block;
+        padding: 5px 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto mt-10 px-4">
+        <div class="profile-header text-center py-10 px-6 mb-8 relative">
+          <h3 class="inline-block">Hello <%= @user.username %></h3>
+          <%= link_to 'Edit Profile', edit_user_path(@user), class: 'edit-btn absolute top-1/2 right-6 transform -translate-y-1/2' %>
+      </div>
+
+        <div class="card mx-4">
+            <div class="card-header text-center">
+                <h4 class="mb-0">Your Articles</h4>
+            </div>
+            <div class="card-body">
+              <% if @user.articles.any? %>
+                <div class="article-list">
+                  <% @user.articles.each do |article| %>
+                    <div class="article-card position-relative">
+                      <h3><%= article.title %></h3>
+                      <p><%= article.description %></p>
+                      <div class="dropdown">
+                        <button class="text-gray-500 hover:text-gray-700">
+                          <i class="ph ph-dots-three-outline-vertical icon" onclick="toggleDropDown(<%= article.id %>)"></i>
+                        </button>
+                        <div id="dropdown-<%= article.id %>" class="dropdown-content hidden">
+                          <%= link_to 'View', article_path(article) %>
+                          <%= link_to 'Update', edit_article_path(article) %>
+                          <%= button_to 'Delete', article_path(article), method: :delete, data: { turbo_confirm: 'Are you sure?' } %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <p class="no-articles">You have not created any articles yet.</p>
+              <% end %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      const toggleDropDown = (id) => {
+        const dropdown = document.getElementById(`dropdown-${id}`);
+        if (dropdown) {
+          dropdown.classList.toggle('hidden');
+        }
+      };
+
+      // Ensure the script runs after Turbo loads
+      document.addEventListener('turbo:load', () => {
+        // Any additional initialization if needed
+      });
+    </script>
+
+</body>
+</html>
